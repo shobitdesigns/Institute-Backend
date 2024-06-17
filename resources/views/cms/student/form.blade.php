@@ -54,20 +54,35 @@
                 <div class="row">
                     <div class="form-group col-3">
                         {{ Form::label('course_id', 'Select Course', []) }}<span style="color: red;"> *</span>
-                        {{ Form::select('course_id',$courses, $object->studentCourse->course_id ?? null, ['class' => 'form-control select2 course','placeholder' => 'Select Course', 'data-placeholder' => 'Select Course','required']) }}
+                        {{ Form::select('course_id',$courses, $object->studentCourse->course_id ?? null, ['class' => 'form-control select2 course', 'disabled','placeholder' => 'Select Course', 'data-placeholder' => 'Select Course','required']) }}
                     </div>
 
                     <div class="form-group col-3">
                         {{ Form::label('tenth_document', '10th Document') }}
                         {{ Form::file('tenth_document', ['class' => 'file', 'accept' => 'application/pdf']) }}
+                        @if (!empty($object->tenth_document))
+                            <div class="ml-3">
+                                <a href="{{asset('uploads/students/'.$object->id.'/'.$object->tenth_document)}}" target="_blank"><i class="fa-eye fa text-primary mt-5"></i></a>
+                            </div>
+                        @endif
                     </div>
                     <div class="form-group col-3">
                         {{ Form::label('twelfth_document', '12th Document') }}
                         {{ Form::file('twelfth_document', ['class' => 'file', 'accept' => 'application/pdf']) }}
+                        @if (!empty($object->twelfth_document))
+                            <div class="ml-3">
+                                <a href="{{asset('uploads/students/'.$object->id.'/'.$object->twelfth_document)}}" target="_blank"><i class="fa-eye fa text-primary mt-5"></i></a>
+                            </div>
+                        @endif
                     </div>
                     <div class="form-group col-3">
                         {{ Form::label('aadhaar_document', 'Aadhaar') }}
                         {{ Form::file('aadhaar_document', ['class' => 'file', 'accept' => 'application/pdf']) }}
+                        @if (!empty($object->aadhaar_document))
+                            <div class="ml-3">
+                                <a href="{{asset('uploads/students/'.$object->id.'/'.$object->aadhaar_document)}}" target="_blank"><i class="fa-eye fa text-primary mt-5"></i></a>
+                            </div>
+                        @endif
                     </div>
 
                 </div>

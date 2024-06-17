@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\cms;
 
+use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Course;
 use App\Models\Student;
 use Illuminate\Http\Request;
 use App\Models\StudentCourse;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Session;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -131,7 +133,55 @@ class StudentController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $student                  =   Student::find($id);
+        if(empty($student))
+        {
+            Session::flash('error','Data not found');
+        }
+        $student->first_name      =   $request->first_name;
+        $student->last_name       =   $request->last_name;
+        $student->email           =   $request->email;
+        $student->user_id         =   auth()->user()->id;
+        $student->mobile          =   $request->mobile;
+
+        if ($request->has("tenth_document")) {
+            if (file_exists("uploads/students/".$student->id."/" . $student->tenth_document)) {
+                File::delete("uploads/students/".$student->id."/"  . $student->tenth_document);
+            }
+            // image upload code
+            $tenthDocument  = $student->first_name.'_'."student_tenth_document." . $request->file('tenth_document')->getClientOriginalExtension();
+            $request->file('tenth_document')->move(public_path('uploads/students/'.$student->id."/" ), $tenthDocument);
+            $student->tenth_document   =  $tenthDocument;
+        }
+
+        if ($request->has("twelfth_document")) {
+            if (file_exists("uploads/students/".$student->id."/" . $student->twelfth_document)) {
+                File::delete("uploads/students/".$student->id."/"  . $student->twelfth_document);
+            }
+            // image upload code
+            $twelfthDocument  = $student->first_name.'_'."student_twelfth_document." . $request->file('twelfth_document')->getClientOriginalExtension();
+            $request->file('twelfth_document')->move(public_path('uploads/students/'.$student->id."/" ), $twelfthDocument);
+            $student->twelfth_document   =  $twelfthDocument;
+        }
+        if ($request->has("aadhaar_document")) {
+            if (file_exists("uploads/students/".$student->id."/" . $student->aadhaar_document)) {
+                File::delete("uploads/students/".$student->id."/"  . $student->aadhaar_document);
+            }
+            // image upload code
+            $aadhaarDocument  = $student->first_name.'_'."student_aadhaar_document." . $request->file('aadhaar_document')->getClientOriginalExtension();
+            $request->file('aadhaar_document')->move(public_path('uploads/students/'.$student->id."/" ), $aadhaarDocument);
+            $student->aadhaar_document   =  $aadhaarDocument;
+        }
+
+        $student->update();
+
+        $data['message']          =   auth()->user()->name . " has updated " . $student->name;
+        $data['action']           =   "updated";
+        $data['module']           =   "student";
+        $data['object']           =   $student;
+        saveLogs($data);
+        Session::flash("success", "student Register");
+        return redirect(route('student.index'));
     }
 
     /**
