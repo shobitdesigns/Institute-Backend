@@ -55,11 +55,14 @@ class StudentController extends Controller
                     $deleteUrl      =   route('student.destroy', ['student' => $data->id]);
                     $btn            =   '<div class="row">';
                     $btn            .=  '<a href="' . $editUrl . '"><i class="fa fa-edit"></i></a>';
-                    $btn            .=  '<a style="cursor: pointer;"
+                    if(auth()->user()->hasRole('admin'))
+                    {
+                        $btn        .=  '<a style="cursor: pointer;"
                                             onclick="deleteItem(\'' . $deleteUrl . '\')">
                                             <i class="fa fa-trash text-red ml-3"></i>
-                                        </a>
-                                    </div>';
+                                        </a>';
+                    }
+                    $btn            .=  '</div>';
 
                     return $btn;
 
@@ -148,7 +151,6 @@ class StudentController extends Controller
             if (file_exists("uploads/students/".$student->id."/" . $student->tenth_document)) {
                 File::delete("uploads/students/".$student->id."/"  . $student->tenth_document);
             }
-            // image upload code
             $tenthDocument  = $student->first_name.'_'."student_tenth_document." . $request->file('tenth_document')->getClientOriginalExtension();
             $request->file('tenth_document')->move(public_path('uploads/students/'.$student->id."/" ), $tenthDocument);
             $student->tenth_document   =  $tenthDocument;
@@ -158,7 +160,6 @@ class StudentController extends Controller
             if (file_exists("uploads/students/".$student->id."/" . $student->twelfth_document)) {
                 File::delete("uploads/students/".$student->id."/"  . $student->twelfth_document);
             }
-            // image upload code
             $twelfthDocument  = $student->first_name.'_'."student_twelfth_document." . $request->file('twelfth_document')->getClientOriginalExtension();
             $request->file('twelfth_document')->move(public_path('uploads/students/'.$student->id."/" ), $twelfthDocument);
             $student->twelfth_document   =  $twelfthDocument;
@@ -167,7 +168,6 @@ class StudentController extends Controller
             if (file_exists("uploads/students/".$student->id."/" . $student->aadhaar_document)) {
                 File::delete("uploads/students/".$student->id."/"  . $student->aadhaar_document);
             }
-            // image upload code
             $aadhaarDocument  = $student->first_name.'_'."student_aadhaar_document." . $request->file('aadhaar_document')->getClientOriginalExtension();
             $request->file('aadhaar_document')->move(public_path('uploads/students/'.$student->id."/" ), $aadhaarDocument);
             $student->aadhaar_document   =  $aadhaarDocument;

@@ -2,19 +2,19 @@
 
 namespace App\Models;
 
-use App\Models\Qualification;
+use App\Models\Course;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-class Course extends Model
+class Qualification extends Model
 {
     use HasFactory;
     protected   $guarded    =   ['id'];
-    protected   $table      =   'courses';
+    protected   $table      =   'qualifications';
 
-    public function qualifications():BelongsToMany
+    public function courses():BelongsToMany
     {
-        return $this->belongsToMany(Qualification::class, 'course_qualifications');
+        return $this->belongsToMany(Course::class, 'course_qualifications');
     }
 }

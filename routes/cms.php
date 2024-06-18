@@ -5,12 +5,14 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\LeaveController;
 use App\Http\Controllers\ModuleController;
+use App\Http\Controllers\cms\CourseController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\cms\SettingController;
 use App\Http\Controllers\cms\StudentController;
 use App\Http\Controllers\cms\DashboardController;
 use App\Http\Controllers\cms\AttendanceController;
 use App\Http\Controllers\cms\ActivityLogsController;
+use App\Http\Controllers\cms\QualificationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -43,4 +45,6 @@ Route::get("logout/switch/user",            [UserController::class,'logoutSwitch
 Route::resource('setting',                  SettingController::class);
 Route::get("activity/logs",                 [ActivityLogsController::class,'index'])->name("activityLogs");
 Route::resource('student',                  StudentController::class);
+Route::resource('course',                   CourseController::class);
+Route::resource('qualification',            QualificationController::class);
 

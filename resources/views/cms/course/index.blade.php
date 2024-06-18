@@ -6,7 +6,7 @@
                 <div class="col">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
-                        <li class="breadcrumb-item active">Student List</li>
+                        <li class="breadcrumb-item active">Course List</li>
                     </ol>
                 </div><!-- /.col -->
             </div><!-- /.row -->
@@ -15,17 +15,17 @@
     <div class="col-12">
         <div class="card card-primary card-outline">
             <div class="card-header">
-                <h3 class="card-title">Student List</h3>
+                <h3 class="card-title">Course List</h3>
             </div>
             <div class="table-responsive">
                 <div class="card-body">
                     <table id="example1" class="table table-bordered table-hover">
                         <thead>
                             <tr>
-                                <th>First Name</th>
-                                <th>Last Name</th>
-                                <th>Email</th>
-                                <th>Mobile</th>
+                                <th>Name</th>
+                                <th>Duration</th>
+                                <th>MRP</th>
+                                <th>Fixed Price</th>
                                 <th>Added By</th>
                                 <th>Action</th>
                             </tr>
@@ -48,23 +48,23 @@
                 processing: true,
                 serverSide: true,
                 order: [],
-                ajax: "{{ route('student.index') }}",
+                ajax: "{{ route('course.index') }}",
                 columns: [
                     {
-                        data: 'first_name',
-                        name: 'first_name'
+                        data: 'name',
+                        name: 'name'
                     },
                     {
-                        data: 'last_name',
-                        name: 'last_name'
+                        data: 'duration',
+                        name: 'duration'
                     },
                     {
-                        data: 'email',
-                        name: 'email'
+                        data: 'mrp',
+                        name: 'mrp'
                     },
                     {
-                        data: 'mobile',
-                        name: 'mobile'
+                        data: 'fix_price',
+                        name: 'fix_price'
                     },
                     {
                         data: 'added_by',

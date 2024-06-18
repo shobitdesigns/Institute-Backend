@@ -112,6 +112,37 @@
                     </ul>
                 </li>
 
+                <li class="nav-item @if (in_array(Route::currentRouteName(), ['course.index','course.create','qualification.index'])) menu-open @endif">
+                    <a href="#" class="nav-link  @if (in_array(Route::currentRouteName(), ['course.index','course.create','qualification.index'])) active @endif">
+                        <i class="nav-icon fas fa-book-open"></i>
+                        <p> Course Management <i class="right fas fa-angle-left"></i></p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('course.create') }}"
+                                class="nav-link @if (Route::currentRouteName() == 'course.create') active @endif">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Add Course</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('course.index') }}"
+                                class="nav-link @if (Route::currentRouteName() == 'course.index') active @endif">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Courses</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('qualification.index') }}"
+                                class="nav-link @if (Route::currentRouteName() == 'qualification.index') active @endif">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Qualifications</p>
+                            </a>
+                        </li>
+
+                    </ul>
+                </li>
+
                 @can('admin', new App\Models\User())
                     <li class="nav-item">
                         <a href="{{ route('setting.index') }}"
