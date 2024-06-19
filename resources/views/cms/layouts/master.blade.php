@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>UKUU-EMS | Dashboard</title>
+    <title>Institute | Dashboard</title>
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet"
@@ -63,82 +63,9 @@
 
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
-            <button class="btn btn-block btn-outline-primary col-2 ml-auto customButton"
-                onclick="registerStudent()">Register
-                Student
-                &nbsp;&nbsp; <i class="fa fa-plus-circle"></i></button>
-            <!-- Main content -->
+
             @yield('content')
             <!-- /.content -->
-
-            <div class="modal fade show" id="register-student-form" style="display: none; padding-right: 17px;"
-                aria-modal="true" role="dialog">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h4 class="modal-title">Register New Student</h4>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true" id="close-btn-form" onclick="registerStudent()">×</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            {!! Form::open([
-                                'url' => route('student.store'),
-                                'method' => 'POST',
-                                'id' => 'student-register-form',
-                                'onSubmit' => "document.getElementById('register-student-submit').disabled=true;",
-                            ]) !!}
-                            <div class="card-body">
-                                <div class="form-group">
-                                    {{ Form::label('first_name', 'First Name', []) }}<span style="color: red;">
-                                        *</span>
-                                    {{ Form::text('first_name', null, ['class' => 'form-control ', 'id' => 'first-name', 'placeholder' => 'Enter First Name', 'required']) }}
-                                    <small id="firstNameError" style="color: red; display: none;">First Name is
-                                        required.
-                                    </small>
-                                </div>
-                                <div class="form-group">
-                                    {{ Form::label('last_name', 'Last Name', []) }}<span style="color: red;"> *</span>
-                                    {{ Form::text('last_name', null, ['class' => 'form-control', 'id' => 'last-name', 'placeholder' => 'Enter Last Name', 'required']) }}
-                                    <small id="lastNameError" style="color: red; display: none;">Last Name is required.
-                                    </small>
-                                </div>
-                                <div class="form-group wdAdjust">
-                                    {{ Form::label('mobile', 'Mobile Number', []) }}<span style="color: red;">
-                                        *</span>
-                                    {{ Form::number('mobile', null, ['class' => 'form-control customwdajust', 'id' => 'mobile-number', 'placeholder' => 'Enter Mobile Number', 'required']) }}
-                                    <small id="mobileNumberError" style="color: red; display: none;">Mobile Number is
-                                        required.
-                                    </small>
-                                </div>
-                                <div class="form-group">
-                                    {{ Form::label('email', 'Email', []) }}<span style="color: red;"> *</span>
-                                    {{ Form::text('email', null, ['class' => 'form-control', 'id' => 'email', 'placeholder' => 'Enter Email', 'required']) }}
-                                    <small id="emailStudentError" style="color: red; display: none;">Email is required
-                                    </small>
-                                </div>
-                                @php
-                                    $courses = App\Models\Course::pluck('name', 'id')->toArray();
-                                @endphp
-                                <div class="form-group">
-                                    {{ Form::label('course_id', 'Select Course', []) }}<span style="color: red;">
-                                        *</span>
-                                    {{ Form::select('course_id', $courses, null, ['class' => 'form-control select2', 'id' => 'courseId', 'data-placeholder' => 'Select Course', 'placeholder' => 'Select Course', 'required']) }}
-                                    <small id="courseError" style="color: red; display: none;">Course feild is required
-                                    </small>
-                                </div>
-                            </div>
-                            <div class="row" id="right-button">
-                                <button type="submit" class="btn btn-primary" id="register-student-submit">Register
-                                    Student</button>
-                            </div>
-                            {!! Form::close() !!}
-                        </div>
-                    </div>
-
-                </div>
-
-            </div>
         </div>
         <!-- /.content-wrapper -->
         <footer class="main-footer">
@@ -202,82 +129,11 @@
             });
 
 
-            $('#student-register-form').submit(function(e) {
-                e.preventDefault();
-                if (!validateData(this)) {
-                    return false;
-                }
-                var url = $(this).attr("action");
-                let formData = new FormData(this);
 
-                $.ajax({
-                    type: 'POST',
-                    url: url,
-                    data: formData,
-                    contentType: false,
-                    processData: false,
-                    success: (response) => {
-                        toastr.success('Candidate registered successfully');
-                        location.reload();
-                    },
-                    error: function(failure) {
-                        if (failure.responseJSON && failure.responseJSON.errors) {
-                            // If there are detailed error messages for specific fields
-                            $.each(failure.responseJSON.errors, function(key, value) {
-                                toastr.error(value);
-                            });
-                            $("#student-register-form").find("#register-student-submit").prop(
-                                "disabled", false);
-                        }
-                    }
-                });
-
-            });
-
-            $('#mobile-number').on('input', function() {
-                var mobileNumber = $(this).val();
-                if (mobileNumber.length > 10) {
-                    $(this).val(mobileNumber.slice(0, 10));
-                }
-            });
 
 
 
         });
-
-        function registerStudent() {
-            $("#register-student-form").modal("show");
-        }
-
-        function validateData(formObject) {
-            var firstName = $("#first-name").val();
-            var lastName = $("#last-name").val();
-            var mobileNumber = $("#mobile-number").val();
-            var email = $("#email").val();
-            var courseId = $("#courseId").val();
-            if (firstName == "" || firstName == null) {
-                $('#firstNameError').toggle();
-                return false;
-            }
-            if (lastName == "" || lastName == null) {
-                $('#lastNameError').toggle();
-                return false;
-            }
-            if (mobileNumber == "" || mobileNumber == null) {
-                $('#mobileNumberError').toggle();
-                return false;
-            }
-            if (email == "" || email == null) {
-                $('#emailStudentError').toggle();
-                return false;
-            }
-            if (courseId == "" || courseId == null) {
-                $('#courseError').toggle();
-                return false;
-            }
-
-            return true;
-        }
 
         if ("{{ session()->has('success') }}") {
             let message = "{{ session()->get('success') }}";

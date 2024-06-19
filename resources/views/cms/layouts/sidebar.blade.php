@@ -95,12 +95,19 @@
                     </li>
                 @endcan
 
-                <li class="nav-item @if (in_array(Route::currentRouteName(), ['stuednt.index'])) menu-open @endif">
-                    <a href="#" class="nav-link  @if (in_array(Route::currentRouteName(), ['stuednt.index'])) active @endif">
+                <li class="nav-item @if (in_array(Route::currentRouteName(), ['student.index','student.create'])) menu-open @endif">
+                    <a href="#" class="nav-link  @if (in_array(Route::currentRouteName(), ['student.index','student.create'])) active @endif">
                         <i class="nav-icon fas fa-users"></i>
                         <p> Student Management <i class="right fas fa-angle-left"></i></p>
                     </a>
                     <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('student.create') }}"
+                                class="nav-link @if (Route::currentRouteName() == 'student.create') active @endif">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Register Student</p>
+                            </a>
+                        </li>
                         <li class="nav-item">
                             <a href="{{ route('student.index') }}"
                                 class="nav-link @if (Route::currentRouteName() == 'student.index') active @endif">

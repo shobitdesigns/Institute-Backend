@@ -8,6 +8,7 @@ use App\Models\Course;
 use App\Models\Student;
 use Illuminate\Http\Request;
 use App\Models\StudentCourse;
+use App\Models\StudentPayment;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Session;
@@ -23,6 +24,7 @@ class StudentController extends Controller
         if ($request->ajax()) {
             $data       =   Student::join('users', 'users.id', '=', 'students.user_id')->select(
                 'students.id as id',
+                'students.unique_id as unique_id',
                 'students.first_name as first_name',
                 'students.last_name as last_name',
                 'students.email as email',
@@ -40,7 +42,7 @@ class StudentController extends Controller
             }
 
             if ($request->order == null) {
-                $data->orderBy('students.created_at', 'desc');
+                $data->orderBy('students.unique_id', 'asc');
             }
 
             return DataTables::of($data)
@@ -53,8 +55,9 @@ class StudentController extends Controller
 
                     $editUrl        =   route('student.edit', ['student' => $data->id]);
                     $deleteUrl      =   route('student.destroy', ['student' => $data->id]);
+                    $detailUrl      =   route('student.show',['student'=>$data->id]);
                     $btn            =   '<div class="row">';
-                    $btn            .=  '<a href="' . $editUrl . '"><i class="fa fa-edit"></i></a>';
+                    $btn            .=  '<a href="' . $editUrl . '"><i class="fa fa-edit ml-2 mr-2"></i></a><a href="' . $detailUrl . '"><i class="fa fa-info-circle ml-2 mr-2"></i></a>';
                     if(auth()->user()->hasRole('admin'))
                     {
                         $btn        .=  '<a style="cursor: pointer;"
@@ -79,7 +82,12 @@ class StudentController extends Controller
      */
     public function create()
     {
-        //
+        $data['object']             =   new Student();
+        $data['method']             =   'POST';
+        $data['url']                =   route('student.store');
+        $data['courses']            =   Course::pluck('name','id')->toArray();
+
+        return view('cms.student.register',$data);
     }
 
     /**
@@ -87,6 +95,18 @@ class StudentController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'first_name'            => 'required|string|max:255',
+            'last_name'             => 'required|string|max:255',
+            'email'                 => 'required|email',
+            'mobile'                => 'required|string|max:15',
+            'course_id'             => 'required',
+            'payment_mode'          => 'required',
+            'payment_method'        => 'required_if:payment_mode,full',
+            'first_installment'     => 'required_if:payment_mode,installment|nullable|numeric',
+            'installment_months'    => 'required_if:payment_mode,installment|nullable|integer'
+        ]);
+
         $student                  =   new Student();
         $student->first_name      =   $request->first_name;
         $student->last_name       =   $request->last_name;
@@ -95,11 +115,53 @@ class StudentController extends Controller
         $student->mobile          =   $request->mobile;
         $student->save();
 
+        if ($request->has("tenth_document")) {
+            if (file_exists("uploads/students/".$student->id."/" . $student->tenth_document)) {
+                File::delete("uploads/students/".$student->id."/"  . $student->tenth_document);
+            }
+            $tenthDocument  = $student->first_name.'_'."student_tenth_document." . $request->file('tenth_document')->getClientOriginalExtension();
+            $request->file('tenth_document')->move(public_path('uploads/students/'.$student->id."/" ), $tenthDocument);
+            $student->tenth_document   =  $tenthDocument;
+        }
+
+        if ($request->has("twelfth_document")) {
+            if (file_exists("uploads/students/".$student->id."/" . $student->twelfth_document)) {
+                File::delete("uploads/students/".$student->id."/"  . $student->twelfth_document);
+            }
+            $twelfthDocument  = $student->first_name.'_'."student_twelfth_document." . $request->file('twelfth_document')->getClientOriginalExtension();
+            $request->file('twelfth_document')->move(public_path('uploads/students/'.$student->id."/" ), $twelfthDocument);
+            $student->twelfth_document   =  $twelfthDocument;
+        }
+        if ($request->has("aadhaar_document")) {
+            if (file_exists("uploads/students/".$student->id."/" . $student->aadhaar_document)) {
+                File::delete("uploads/students/".$student->id."/"  . $student->aadhaar_document);
+            }
+            $aadhaarDocument  = $student->first_name.'_'."student_aadhaar_document." . $request->file('aadhaar_document')->getClientOriginalExtension();
+            $request->file('aadhaar_document')->move(public_path('uploads/students/'.$student->id."/" ), $aadhaarDocument);
+            $student->aadhaar_document   =  $aadhaarDocument;
+        }
+        $student->save();
+
         $studentApplication                     =   new StudentCourse();
         $studentApplication->student_id         =   $student->id;
         $studentApplication->course_id          =   $request->course_id;
         $studentApplication->added_by           =   auth()->user()->id;
         $studentApplication->save();
+
+        $studentPayment                         =   new StudentPayment();
+        $studentPayment->student_course_id      =   $studentApplication->id;
+        $studentPayment->course_fixed_price     =   $studentApplication->course->fix_price;
+        $studentPayment->payment_mode           =   $request->payment_mode;
+        $studentPayment->payment_method         =   $request->payment_method;
+
+        if ($request->payment_mode == 'installment') {
+            $studentPayment->first_installment  =   $request->first_installment;
+            $studentPayment->installment_months =   $request->installment_months;
+            $studentPayment->monthly_payment    =   $request->monthly_payment;
+        }
+
+        $studentPayment->save();
+
         $data['message']            =   auth()->user()->name . " has register " . $student->name;
         $data['action']             =   "created";
         $data['module']             =   "student";
@@ -107,7 +169,8 @@ class StudentController extends Controller
         saveLogs($data);
         Session::flash("success", "student Register");
 
-        return response()->json(['Data Update'], 200);
+        // return response()->json(['Data Update'], 200);
+        return redirect(route('student.index'));
     }
 
     /**
@@ -115,7 +178,14 @@ class StudentController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $data['student']            =   Student::with('studentCourse.payments','addedBy')->find($id);
+        if(empty($data['student']))
+        {
+            Session::flash('error','Data not found');
+            return back();
+        }
+
+        return view('cms.student.paymentDetail',$data);
     }
 
     /**

@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use App\Models\User;
 use App\Models\Course;
 use App\Models\StudentCourse;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Student extends Model
@@ -44,7 +46,7 @@ class Student extends Model
     public static function generateUniqueId()
     {
         $latestStudent  = self::latest('id')->first();
-        $latestId       = $latestStudent ? intval(substr($latestStudent->unique_id, 2)) : 999;
+        $latestId       = $latestStudent ? intval(substr($latestStudent->unique_id, 2)) : 1000;
         return 'J-' . ($latestId + 1);
     }
 
@@ -56,5 +58,10 @@ class Student extends Model
     public function studentCourse():HasOne
     {
         return $this->hasOne(StudentCourse::class);
+    }
+
+    public function addedBy():BelongsTo
+    {
+        return $this->belongsTo(User::class,'user_id');
     }
 }

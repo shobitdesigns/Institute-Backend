@@ -5,6 +5,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\LeaveController;
 use App\Http\Controllers\ModuleController;
+use App\Http\Controllers\cms\CommonController;
 use App\Http\Controllers\cms\CourseController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\cms\SettingController;
@@ -47,4 +48,7 @@ Route::get("activity/logs",                 [ActivityLogsController::class,'inde
 Route::resource('student',                  StudentController::class);
 Route::resource('course',                   CourseController::class);
 Route::resource('qualification',            QualificationController::class);
+
+//Ajax Routes
+Route::get('get-course-details/{id}',       [CommonController::class, 'getCourse'])->name('getCourse');
 

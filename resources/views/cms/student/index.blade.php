@@ -22,6 +22,7 @@
                     <table id="example1" class="table table-bordered table-hover">
                         <thead>
                             <tr>
+                                <th>U-ID</th>
                                 <th>First Name</th>
                                 <th>Last Name</th>
                                 <th>Email</th>
@@ -50,6 +51,10 @@
                 order: [],
                 ajax: "{{ route('student.index') }}",
                 columns: [
+                    {
+                        data: 'unique_id',
+                        name: 'unique_id'
+                    },
                     {
                         data: 'first_name',
                         name: 'first_name'
