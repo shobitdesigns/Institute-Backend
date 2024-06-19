@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\cms;
 
+use App\Models\User;
 use App\Models\Course;
 use Illuminate\Http\Request;
 use App\Models\Qualification;
@@ -84,11 +85,12 @@ class CourseController extends Controller
         $course->duration       =       $request->duration;
         $course->mrp            =       $request->mrp;
         $course->fix_price      =       $request->fix_price;
-        $course->qualification  =       $request->qualification;
         $course->added_by       =       auth()->user()->id;
         $course->save();
 
-        $data['message']        =       auth()->user()->name . " has register " . $course->name;
+        $course->qualifications()->sync($request->qualification_ids);
+
+        $data['message']        =       auth()->user()->name . " has created " . $course->name;
         $data['action']         =       "created";
         $data['module']         =       "course";
         $data['object']         =       $course;
@@ -111,7 +113,7 @@ class CourseController extends Controller
      */
     public function edit(string $id)
     {
-        $data['object']         =       Course::find($id);
+        $data['object']         =       Course::with('qualifications')->find($id);
         $data['method']         =       'PUT';
         $data['url']            =       route('course.update',['course'=>$id]);
         $data['qualifications'] =       Qualification::pluck('qualification','id')->toArray();
@@ -124,7 +126,24 @@ class CourseController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $course                 =       Course::find($id);
+        $course->name           =       $request->name;
+        $course->duration       =       $request->duration;
+        $course->mrp            =       $request->mrp;
+        $course->fix_price      =       $request->fix_price;
+        $course->added_by       =       auth()->user()->id;
+        $course->update();
+
+        $course->qualifications()->sync($request->qualification_ids);
+
+        $data['message']        =       auth()->user()->name . " has updated " . $course->name;
+        $data['action']         =       "updated";
+        $data['module']         =       "course";
+        $data['object']         =       $course;
+        saveLogs($data);
+        Session::flash("success", "student Register");
+
+        return redirect(route('course.index'));
     }
 
     /**
@@ -132,6 +151,22 @@ class CourseController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $this->authorize("admin", new User());
+
+        $course             =   Course::find($id);
+        if (empty($course)) {
+            Session::flash("error", "Course Already Deleted");
+            return back();
+        }
+
+        $course->qualifications()->detach();
+        $data['message']        =   auth()->user()->name . " has deleted $course->name";
+        $data['action']         =   "deleted";
+        $data['module']         =   "course";
+        $data['object']         =   $course;
+        saveLogs($data);
+        $course->delete();
+        Session::flash("success", "Course Deleted");
+        return response()->json(['Data Deleted'], 200);
     }
 }
