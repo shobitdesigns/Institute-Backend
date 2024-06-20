@@ -1,6 +1,6 @@
 /*
 SQLyog Ultimate v13.1.1 (64 bit)
-MySQL - 10.4.32-MariaDB : Database - ukuu_ems
+MySQL - 10.4.32-MariaDB : Database - new_institute
 *********************************************************************
 */
 
@@ -12,9 +12,9 @@ MySQL - 10.4.32-MariaDB : Database - ukuu_ems
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-CREATE DATABASE /*!32312 IF NOT EXISTS*/`ukuu_ems` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci */;
+CREATE DATABASE /*!32312 IF NOT EXISTS*/`new_institute` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci */;
 
-USE `ukuu_ems`;
+USE `new_institute`;
 
 /*Table structure for table `activity_logs` */
 
@@ -30,62 +30,59 @@ CREATE TABLE `activity_logs` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `activity_logs` */
 
 insert  into `activity_logs`(`id`,`action`,`module`,`module_id`,`message`,`action_by`,`created_at`,`updated_at`) values 
 (1,'created','leave',1,'Archana has created leave from \'2024-06-11\' to \'2024-06-11\'',6,'2024-06-11 05:06:21','2024-06-11 05:06:21'),
 (2,'created','leave',3,'Raman has created leave from \'2024-06-13\' to \'2024-06-15\'',2,'2024-06-11 06:07:56','2024-06-11 06:07:56'),
-(3,'created','leave',6,'Raman has created leave from \'2024-06-12\' to \'2024-06-12\'',2,'2024-06-11 06:20:40','2024-06-11 06:20:40');
+(3,'created','leave',6,'Raman has created leave from \'2024-06-12\' to \'2024-06-12\'',2,'2024-06-11 06:20:40','2024-06-11 06:20:40'),
+(4,'created','leave',8,'Raman has created leave from \'2024-06-12\' to \'2024-06-12\'',2,'2024-06-12 05:23:23','2024-06-12 05:23:23'),
+(5,'created','leave',9,'Raman has created leave from \'2024-06-12\' to \'2024-06-12\'',2,'2024-06-12 05:23:42','2024-06-12 05:23:42'),
+(6,'created','leave',10,'Raman has created leave from \'2024-06-13\' to \'2024-06-13\'',2,'2024-06-12 05:30:38','2024-06-12 05:30:38'),
+(7,'created','leave',11,'Raman has created leave from \'2024-06-13\' to \'2024-06-13\'',2,'2024-06-12 05:31:19','2024-06-12 05:31:19'),
+(8,'created','student',6,'Lakhvinder Singh has register ',2,'2024-06-17 10:17:34','2024-06-17 10:17:34');
 
-/*Table structure for table `attendance` */
+/*Table structure for table `course_qualifications` */
 
-DROP TABLE IF EXISTS `attendance`;
+DROP TABLE IF EXISTS `course_qualifications`;
 
-CREATE TABLE `attendance` (
+CREATE TABLE `course_qualifications` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) DEFAULT NULL,
-  `attendance_date` date DEFAULT NULL,
-  `arrival_time` time DEFAULT NULL,
-  `leaving_time` time DEFAULT NULL,
+  `course_id` int(11) DEFAULT NULL,
+  `qualification_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+/*Data for the table `course_qualifications` */
+
+insert  into `course_qualifications`(`id`,`course_id`,`qualification_id`) values 
+(3,4,1),
+(4,4,3),
+(6,1,1);
+
+/*Table structure for table `courses` */
+
+DROP TABLE IF EXISTS `courses`;
+
+CREATE TABLE `courses` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) DEFAULT NULL,
+  `duration` varchar(60) DEFAULT NULL,
+  `mrp` varchar(60) DEFAULT NULL,
+  `fix_price` varchar(60) DEFAULT NULL,
+  `added_by` int(11) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-/*Data for the table `attendance` */
+/*Data for the table `courses` */
 
-insert  into `attendance`(`id`,`user_id`,`attendance_date`,`arrival_time`,`leaving_time`,`created_at`,`updated_at`) values 
-(14,1,'2024-05-11','16:26:20','18:00:20','2024-05-13 12:06:01','2024-05-11 10:56:27'),
-(15,1,'2024-05-13','09:00:00',NULL,'2024-05-13 10:06:40','2024-05-13 03:49:09'),
-(16,2,'2024-05-13','09:21:59',NULL,'2024-05-13 03:51:59','2024-05-13 03:51:59'),
-(17,4,'2024-05-13','09:22:32',NULL,'2024-05-13 03:52:32','2024-05-13 03:52:32'),
-(18,5,'2024-05-13','09:23:01',NULL,'2024-05-13 03:53:01','2024-05-13 03:53:01'),
-(19,6,'2024-05-13','09:23:21',NULL,'2024-05-13 03:53:21','2024-05-13 03:53:21'),
-(20,2,'2024-06-03','09:33:52',NULL,'2024-06-03 04:03:52','2024-06-03 04:03:52'),
-(21,4,'2024-06-03','09:34:13',NULL,'2024-06-03 04:04:13','2024-06-03 04:04:13'),
-(23,1,'2024-06-03','09:56:05','09:56:14','2024-06-03 09:56:14','2024-06-03 04:26:14');
-
-/*Table structure for table `documents` */
-
-DROP TABLE IF EXISTS `documents`;
-
-CREATE TABLE `documents` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) DEFAULT NULL,
-  `aadhar_card` text DEFAULT NULL,
-  `bank_document` text DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
-/*Data for the table `documents` */
-
-insert  into `documents`(`id`,`user_id`,`aadhar_card`,`bank_document`,`created_at`,`updated_at`) values 
-(1,4,'Shobit_aadhar_card_1715411813.pdf','Shobit_bank_document_1715411813.pdf','2024-05-11 12:46:53','2024-05-11 07:16:53'),
-(2,2,'Raman_aadhar_card_1715412177.pdf','Raman_bank_document_1715412177.pdf','2024-05-11 07:22:57','2024-05-11 07:22:57');
+insert  into `courses`(`id`,`name`,`duration`,`mrp`,`fix_price`,`added_by`,`created_at`,`updated_at`) values 
+(1,'COOKING course','6','10000','8000',1,'2024-06-18 10:32:40',NULL),
+(4,'Bachelor of Hotel Management (BHM)','12','80000','70000',1,'2024-06-19 04:01:57','2024-06-19 04:01:57');
 
 /*Table structure for table `failed_jobs` */
 
@@ -104,26 +101,6 @@ CREATE TABLE `failed_jobs` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 /*Data for the table `failed_jobs` */
-
-/*Table structure for table `leaves` */
-
-DROP TABLE IF EXISTS `leaves`;
-
-CREATE TABLE `leaves` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) DEFAULT NULL,
-  `leave_type` varchar(255) DEFAULT NULL,
-  `start_date` date DEFAULT NULL,
-  `end_date` date DEFAULT NULL,
-  `reason` text DEFAULT NULL,
-  `status` varchar(255) DEFAULT NULL,
-  `remarks` text DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
-/*Data for the table `leaves` */
 
 /*Table structure for table `migrations` */
 
@@ -184,12 +161,12 @@ CREATE TABLE `permission_role` (
   `role_id` int(11) DEFAULT NULL,
   `permission_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `permission_role` */
 
 insert  into `permission_role`(`id`,`role_id`,`permission_id`) values 
-(2,3,4);
+(3,3,4);
 
 /*Table structure for table `permissions` */
 
@@ -233,6 +210,24 @@ CREATE TABLE `personal_access_tokens` (
 
 /*Data for the table `personal_access_tokens` */
 
+/*Table structure for table `qualifications` */
+
+DROP TABLE IF EXISTS `qualifications`;
+
+CREATE TABLE `qualifications` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `qualification` varchar(255) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+/*Data for the table `qualifications` */
+
+insert  into `qualifications`(`id`,`qualification`,`created_at`,`updated_at`) values 
+(1,'10th','2024-06-18 15:57:58','2024-06-18 10:27:58'),
+(3,'12th','2024-06-18 09:38:56','2024-06-18 09:38:56');
+
 /*Table structure for table `role_user` */
 
 DROP TABLE IF EXISTS `role_user`;
@@ -242,13 +237,13 @@ CREATE TABLE `role_user` (
   `user_id` int(11) DEFAULT NULL,
   `role_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `role_user` */
 
 insert  into `role_user`(`id`,`user_id`,`role_id`) values 
-(1,2,3),
-(2,6,3);
+(3,4,3),
+(5,2,3);
 
 /*Table structure for table `roles` */
 
@@ -285,7 +280,78 @@ CREATE TABLE `settings` (
 /*Data for the table `settings` */
 
 insert  into `settings`(`id`,`name`,`logo`,`created_at`,`updated_at`) values 
-(1,'UKUU CMS','logo_1715404877.jpeg','2024-05-11 10:51:17','2024-05-11 05:21:17');
+(1,'Institute','logo_1718347227.jpeg','2024-06-14 12:10:27','2024-06-14 06:40:27');
+
+/*Table structure for table `student_courses` */
+
+DROP TABLE IF EXISTS `student_courses`;
+
+CREATE TABLE `student_courses` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `student_id` int(11) DEFAULT NULL,
+  `course_id` int(11) DEFAULT NULL,
+  `added_by` int(11) DEFAULT NULL,
+  `monthly_payment` varchar(255) DEFAULT NULL,
+  `course_fixed_price` varchar(60) DEFAULT NULL,
+  `installment_months` varchar(60) DEFAULT NULL,
+  `payment_mode` varchar(255) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+/*Data for the table `student_courses` */
+
+insert  into `student_courses`(`id`,`student_id`,`course_id`,`added_by`,`monthly_payment`,`course_fixed_price`,`installment_months`,`payment_mode`,`created_at`,`updated_at`) values 
+(1,1,1,1,NULL,'8000',NULL,NULL,'2024-06-20 05:57:00','2024-06-20 05:57:00'),
+(4,4,4,1,'10000.00','70000','6','installment','2024-06-20 06:47:54','2024-06-20 06:47:54');
+
+/*Table structure for table `student_payments` */
+
+DROP TABLE IF EXISTS `student_payments`;
+
+CREATE TABLE `student_payments` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `student_course_id` int(11) DEFAULT NULL,
+  `payment_mode` varchar(255) DEFAULT NULL,
+  `payment_method` varchar(255) DEFAULT NULL,
+  `pay` varchar(60) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+/*Data for the table `student_payments` */
+
+insert  into `student_payments`(`id`,`student_course_id`,`payment_mode`,`payment_method`,`pay`,`created_at`,`updated_at`) values 
+(1,1,'full_pay','offline','8000','2024-06-20 05:57:00','2024-06-20 05:57:00'),
+(3,4,'installment','online','10000','2024-06-20 06:47:54','2024-06-20 06:47:54');
+
+/*Table structure for table `students` */
+
+DROP TABLE IF EXISTS `students`;
+
+CREATE TABLE `students` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `unique_id` varchar(255) DEFAULT NULL,
+  `first_name` varchar(255) DEFAULT NULL,
+  `last_name` varchar(255) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `mobile` varchar(60) DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `tenth_document` varchar(255) DEFAULT NULL,
+  `twelfth_document` varchar(255) DEFAULT NULL,
+  `aadhaar_document` varchar(255) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+/*Data for the table `students` */
+
+insert  into `students`(`id`,`unique_id`,`first_name`,`last_name`,`email`,`mobile`,`user_id`,`tenth_document`,`twelfth_document`,`aadhaar_document`,`created_at`,`updated_at`) values 
+(1,'J-1001','shobit','thakur','shobit@gmail.com','8989898989',1,'Shobit_student_tenth_document.pdf',NULL,NULL,'2024-06-20 11:27:00','2024-06-20 05:57:00'),
+(4,'J-1002','roshan','kumar','roshan@gmail.com','9898989898',1,NULL,NULL,NULL,'2024-06-20 06:47:54','2024-06-20 06:47:54');
 
 /*Table structure for table `users` */
 
@@ -298,24 +364,21 @@ CREATE TABLE `users` (
   `email_verified_at` timestamp NULL DEFAULT NULL,
   `password` varchar(255) NOT NULL,
   `remember_token` varchar(100) DEFAULT NULL,
-  `super_admin` int(11) DEFAULT NULL,
+  `super_admin` tinyint(1) DEFAULT NULL,
   `profile_pic` varchar(255) DEFAULT NULL,
   `contact_number` varchar(60) DEFAULT NULL,
+  `10th_document` varchar(255) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `users_email_unique` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 /*Data for the table `users` */
 
-insert  into `users`(`id`,`name`,`email`,`email_verified_at`,`password`,`remember_token`,`super_admin`,`profile_pic`,`contact_number`,`created_at`,`updated_at`,`deleted_at`) values 
-(1,'avinash','avinash@gmail.com',NULL,'$2y$12$XwMucxK7P34wktT3Vx/yaeSw5/G1Y3fNV1dRPm3.xz7OL4YODpjSu',NULL,1,NULL,NULL,'2024-05-10 15:25:19','2024-05-10 15:25:21',NULL),
-(2,'raman','raman@gmail.com',NULL,'$2y$10$JEQNW/5O/9HHSsCb/wRWFOBdGQLZnjZR72YXX6qpXxjJlpS8OEmge',NULL,NULL,'user_1715404247.jpeg','8989898989','2024-05-11 05:10:47','2024-05-11 06:41:47',NULL),
-(4,'shobit','shobit@gmail.com',NULL,'$2y$10$tYDWWTH35GrdTyA.Tt86X.BDnG6NcObIqGQFEslo9BYbBUaT0OlbK',NULL,NULL,'user_1715411632.webp','8787878787','2024-05-11 05:55:10','2024-05-11 07:13:52',NULL),
-(5,'satyam','satyam@gmail.com',NULL,'$2y$10$XJZwP5cM85ba8eW1A0eDfOhAlK397yv33PnIlgVlaUcVuHd0YwJEC',NULL,NULL,NULL,'8989898989','2024-05-13 03:50:29','2024-05-13 03:50:29',NULL),
-(6,'archana','archana@gmail.com',NULL,'$2y$10$bSnfsrpa0hAtoTRLELBaaObSA6DVapVqsd2oHs6B0fNvW3WKWA4km',NULL,NULL,NULL,'8989898898','2024-05-13 03:51:01','2024-05-13 03:51:01',NULL);
+insert  into `users`(`id`,`name`,`email`,`email_verified_at`,`password`,`remember_token`,`super_admin`,`profile_pic`,`contact_number`,`10th_document`,`created_at`,`updated_at`) values 
+(1,'aviansh','avinash@gmail.com',NULL,'$2y$10$HjbFAdY5FzlaqZiJB6m7quGmCeWf4vTZGczOxtuxbDn8upfi3Ki.y',NULL,1,NULL,NULL,NULL,'2024-06-14 06:01:22','2024-06-14 06:01:22'),
+(2,'lakhvinder singh','lakhvinder@gmail.com',NULL,'$2y$10$JPA3yfsf7q5oToAiMia2NOXZYUu/OrlPgTMzHujiZbiKOObWJMjki',NULL,NULL,'user_1718347473.jpg','0987654321',NULL,'2024-06-14 06:44:33','2024-06-14 06:45:13');
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

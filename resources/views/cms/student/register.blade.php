@@ -116,8 +116,8 @@
                     <div class="col-9" id="installment_details" style="display: none;">
                         <div class="row">
                             <div class="form-group col-3" >
-                                {{ Form::label('first_installment', 'First Installment', []) }}
-                                {{ Form::number('first_installment', null, ['class' => 'form-control', 'placeholder' => 'Enter first installment','id'=>'first_installment']) }}
+                                {{ Form::label('installment', 'First Installment', []) }}
+                                {{ Form::number('installment', null, ['class' => 'form-control', 'placeholder' => 'Enter first installment','id'=>'installment']) }}
                             </div>
                             <div class="form-group col-3">
                                 {{ Form::label('installment_months', 'Installment Months', []) }}
@@ -263,16 +263,16 @@
             });
 
 
-            $('#installment_months, #first_installment').on('input', function() {
+            $('#installment_months, #installment').on('input', function() {
                 var fixPrice            =   parseFloat($('#fix_price').val());
-                var firstInstallment    =   parseFloat($('#first_installment').val());
+                var firstInstallment    =   parseFloat($('#installment').val());
                 var installmentMonths   =   parseInt($('#installment_months').val());
                 var courseDuration      =   parseInt($('#duration').val());
 
                 if (firstInstallment >= fixPrice)
                 {
                     alert("Installment cannot be more than Fixed Price.");
-                    $('#first_installment').val('');
+                    $('#installment').val('');
                     $('#installment_months').val('');
                     $('#monthly_payment').val('');
                 }

@@ -103,7 +103,7 @@ class StudentController extends Controller
             'course_id'             => 'required',
             'payment_mode'          => 'required',
             'payment_method'        => 'required_if:payment_mode,full',
-            'first_installment'     => 'required_if:payment_mode,installment|nullable|numeric',
+            'installment'           => 'required_if:payment_mode,installment|nullable|numeric',
             'installment_months'    => 'required_if:payment_mode,installment|nullable|integer'
         ]);
 
@@ -145,19 +145,24 @@ class StudentController extends Controller
         $studentApplication                     =   new StudentCourse();
         $studentApplication->student_id         =   $student->id;
         $studentApplication->course_id          =   $request->course_id;
+        $studentApplication->monthly_payment    =   $request->monthly_payment;
+        $course                                 =   Course::find($request->course_id);
+        $studentApplication->course_fixed_price =   $course->fix_price;
+        $studentApplication->payment_mode       =   $request->payment_mode;
+        $studentApplication->installment_months =   $request->installment_months;
         $studentApplication->added_by           =   auth()->user()->id;
         $studentApplication->save();
 
         $studentPayment                         =   new StudentPayment();
         $studentPayment->student_course_id      =   $studentApplication->id;
-        $studentPayment->course_fixed_price     =   $studentApplication->course->fix_price;
         $studentPayment->payment_mode           =   $request->payment_mode;
         $studentPayment->payment_method         =   $request->payment_method;
 
         if ($request->payment_mode == 'installment') {
-            $studentPayment->first_installment  =   $request->first_installment;
-            $studentPayment->installment_months =   $request->installment_months;
-            $studentPayment->monthly_payment    =   $request->monthly_payment;
+            $studentPayment->pay                =   $request->installment;
+        }
+        else{
+            $studentPayment->pay                =   $studentApplication->course_fixed_price;
         }
 
         $studentPayment->save();
