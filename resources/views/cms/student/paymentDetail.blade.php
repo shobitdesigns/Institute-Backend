@@ -69,6 +69,21 @@
                                                         <th>Installment Month:</th>
                                                         <td>{{ $student->studentCourse->installment_months }} Months</td>
                                                     </tr>
+                                                    <tr>
+                                                        <th>Total Pay:</th>
+                                                        <td>{{ $totalPaid }}</td>
+                                                    </tr>
+                                                    @if($balanceLeft == 0)
+                                                        <tr>
+                                                            <th>Status</th>
+                                                            <td><span class="badge badge-success">Payment Completed</span></td>
+                                                        </tr>
+                                                    @else
+                                                        <tr>
+                                                            <th>Fees Left:</th>
+                                                            <td> {{ $balanceLeft }} </td>
+                                                        </tr>
+                                                    @endif
                                                 @else
                                                     <tr>
                                                         <th>Status</th>
@@ -82,9 +97,44 @@
                                 </div>
 
                             </div>
+
                         </div>
                     </div>
+                    @if ($student->studentCourse->payment_mode == 'installment' && $balanceLeft != 0)
+                        <div class="card card-primary  card-outline">
+                            <div class="card-header">
+                                <h3 class="card-title">Manual Payment </h3>
+                            </div>
+                            {{ Form::open(['url' => route('storeMonthlyInstallment'), 'method' => 'POST', 'onSubmit' => "document.getElementById('submit').disabled=true;"]) }}
+                            <input type="hidden" name="student_course_id" value="{{ $student->studentCourse->id }}">
+                            <div class="card-body">
+                                <div class="row" >
+                                    <div class="form-group" id="payment_method" >
+                                        <label for="payment_method">Payment Method</label><span style="color: red;"> *</span>
+                                        <div>
+                                            <label>{{ Form::radio('payment_method', 'online', true) }} Online Payment</label>
+                                            <label>{{ Form::radio('payment_method', 'offline', false) }} Offline Payment</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group ml-4">
+                                        {{ Form::label('installment', 'Monthly Installment', []) }}
+                                        {{ Form::number('installment', null, ['class' => 'form-control', 'placeholder' => 'Enter Monthly Installment','id'=>'installment','required','min'=>'1']) }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <button type="submit" class="btn btn-success float-right"><i
+                                        class="far fa-credit-card"></i> Submit
+                                    Payment
+                                </button>
+                            </div>
+                            {{ Form::close() }}
+                        </div>
+                    @endif
+
                 </div>
+
 
                 <div class="col-7 table-responsive">
                     <table class="table table-striped">
@@ -115,33 +165,6 @@
 
             </div>
 
-            @if ($student->studentCourse->payment_mode == 'installment')
-                <div class="row">
-                    <div class="col-12">
-                        <p class="lead">Manual Payment</p>
-                        <div class="row no-print">
-                            {{ Form::open(['url' => route('submitRole'), 'method' => 'POST', 'onSubmit' => "document.getElementById('submit').disabled=true;"]) }}
-                            <input type="hidden" name="student_course_id" value="{{ $student->studentCourse->id }}">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-sm-3 mt-2">
-                                        <div class="form-check">
-                                            {{-- {{ Form::checkbox('super_admin', 1, $user->super_admin, ['class' => 'form-check-input']) }}
-                                            {{ Form::label('super_admin', 'Super Admin', ['class' => 'form-check-label']) }} --}}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-footer">
-                                <button type="button" class="btn btn-success float-right"><i class="far fa-credit-card"></i> Submit
-                                    Payment
-                                </button>
-                            </div>
-                            {{ Form::close() }}
-                        </div>
-                    </div>
-                </div>
-            @endif
 
 
 
@@ -154,7 +177,6 @@
 @section('footerScript')
     <script>
         $(document).ready(function() {
-
 
         });
     </script>

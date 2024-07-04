@@ -48,6 +48,7 @@ Route::get("activity/logs",                 [ActivityLogsController::class,'inde
 Route::resource('student',                  StudentController::class);
 Route::resource('course',                   CourseController::class);
 Route::resource('qualification',            QualificationController::class);
+Route::post('store-monthly-installment',    [StudentController::class,'storeMonthlyInstallment'])->name('storeMonthlyInstallment');
 
 //Ajax Routes
 Route::get('get-course-details/{id}',       [CommonController::class, 'getCourse'])->name('getCourse');

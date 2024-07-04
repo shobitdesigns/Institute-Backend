@@ -22,4 +22,9 @@ class StudentCourse extends Model
     {
         return $this->belongsTo(Course::class);
     }
+
+    public function student(): BelongsTo
+    {
+        return $this->belongsTo(Student::class,'student_id');
+    }
 }

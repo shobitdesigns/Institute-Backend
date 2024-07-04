@@ -189,6 +189,9 @@ class StudentController extends Controller
             Session::flash('error','Data not found');
             return back();
         }
+        $data['totalPaid']          = $data['student']->studentCourse->payments->sum('pay');
+        $coursePrice                = $data['student']->studentCourse->course_fixed_price;
+        $data['balanceLeft']        = $coursePrice - $data['totalPaid'];
 
         return view('cms.student.paymentDetail',$data);
     }
@@ -281,5 +284,26 @@ class StudentController extends Controller
         $student->delete();
         Session::flash("success", "student Deleted");
         return response()->json($student, 200);
+    }
+
+    public function storeMonthlyInstallment(Request $request)
+    {
+        $studentPayment                     =   new StudentPayment();
+        $studentPayment->student_course_id  =   $request->student_course_id;
+        $studentPayment->payment_mode       =   'installment';
+        $studentPayment->payment_method     =   $request->payment_method;
+        $studentPayment->pay                =   $request->installment;
+        $studentPayment->save();
+
+        $student                  =   $studentPayment->studentCourse->student->name;
+        $data['message']          =   auth()->user()->name . " has updated payment of " . $student->name;
+        $data['action']           =   "updated";
+        $data['module']           =   "studentPayment";
+        $data['object']           =   $studentPayment;
+        saveLogs($data);
+
+        Session::flash('success','Payment Store Successfully');
+
+        return back();
     }
 }
