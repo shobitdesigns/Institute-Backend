@@ -49,6 +49,9 @@ Route::resource('student',                  StudentController::class);
 Route::resource('course',                   CourseController::class);
 Route::resource('qualification',            QualificationController::class);
 Route::post('store-monthly-installment',    [StudentController::class,'storeMonthlyInstallment'])->name('storeMonthlyInstallment');
+Route::get('manage-student-installment',    [StudentController::class,'manageStudentInstallment'])->name('manageStudentInstallment');
+Route::get('monthly-collection',            [StudentController::class,'monthlyCollection'])->name('monthlyCollection');
+Route::get('export-monthly-collection',     [StudentController::class, 'exportMonthlyCollection'])->name('exportMonthlyCollection');
 
 //Ajax Routes
 Route::get('get-course-details/{id}',       [CommonController::class, 'getCourse'])->name('getCourse');

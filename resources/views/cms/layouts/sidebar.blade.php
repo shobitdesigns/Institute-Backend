@@ -95,8 +95,8 @@
                     </li>
                 @endcan
 
-                <li class="nav-item @if (in_array(Route::currentRouteName(), ['student.index','student.create'])) menu-open @endif">
-                    <a href="#" class="nav-link  @if (in_array(Route::currentRouteName(), ['student.index','student.create'])) active @endif">
+                <li class="nav-item @if (in_array(Route::currentRouteName(), ['student.index','student.create','manageStudentInstallment'])) menu-open @endif">
+                    <a href="#" class="nav-link  @if (in_array(Route::currentRouteName(), ['student.index','student.create','manageStudentInstallment'])) active @endif">
                         <i class="nav-icon fas fa-users"></i>
                         <p> Student Management <i class="right fas fa-angle-left"></i></p>
                     </a>
@@ -113,6 +113,13 @@
                                 class="nav-link @if (Route::currentRouteName() == 'student.index') active @endif">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Students</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('manageStudentInstallment') }}"
+                                class="nav-link @if (Route::currentRouteName() == 'manageStudentInstallment') active @endif">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Manage Students Fees</p>
                             </a>
                         </li>
 
@@ -148,6 +155,14 @@
                         </li>
 
                     </ul>
+                </li>
+
+                <li class="nav-item">
+                    <a href="{{ route('monthlyCollection') }}"
+                        class="nav-link @if (Route::currentRouteName() == 'monthlyCollection') active @endif">
+                        <i class="fa fa-cash-register nav-icon"></i>
+                        <p>Monthly Collection</p>
+                    </a>
                 </li>
 
                 @can('admin', new App\Models\User())

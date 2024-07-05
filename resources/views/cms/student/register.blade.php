@@ -30,25 +30,42 @@
                         alphabetical characters.</p>
                 </div>
                 <div class="row">
-                    <div class="form-group col-6">
+                    <div class="form-group col-4">
                         {{ Form::label('first_name', 'First Name', []) }}<span style="color: red;"> *</span>
                         {{ Form::text('first_name', null, ['class' => 'form-control name', 'placeholder' => 'Enter First Name', 'required']) }}
                     </div>
-                    <div class="form-group col-6">
+                    <div class="form-group col-4">
                         {{ Form::label('last_name', 'Last Name', []) }}<span style="color: red;"> *</span>
                         {{ Form::text('last_name', null, ['class' => 'form-control name', 'placeholder' => 'Enter Last Name', 'required']) }}
                     </div>
+                    <div class="form-group col-4">
+                        {{ Form::label('father_name', 'Father Name', []) }}<span style="color: red;"> *</span>
+                        {{ Form::text('father_name', null, ['class' => 'form-control name', 'placeholder' => 'Enter Father Name', 'required']) }}
+                    </div>
                 </div>
                 <div class="row">
-                    <div class="form-group col-6">
+                    <div class="form-group col-4">
                         {{ Form::label('email', 'Email', []) }}<span style="color: red;"> *</span>
                         {{ Form::email('email', null, ['class' => 'form-control', 'placeholder' => 'Enter Email', 'required', 'email']) }}
                         <small id="emailError" style="color: red; display: none;">Invalid email type. Please enter an @gmail.com
                         </small>
                     </div>
-                    <div class="form-group col-6">
+                    <div class="form-group col-4">
                         {{ Form::label('mobile', 'Mobile', []) }}<span style="color: red;"> *</span>
                         {{ Form::text('mobile', null, ['class' => 'form-control contact_number','id'=>'numberInput' ,'placeholder' => 'Enter Mobile', 'required']) }}
+                    </div>
+                    <div class="col-4">
+                        {{ Form::label('institute', 'Institute', []) }}<span style="color: red;"> *</span>
+                        <div class="form-group row">
+                            <div class="form-check ml-3 mr-3">
+                                <input class="form-check-input" type="radio" name="institute" checked="" value="uei">
+                                <label class="form-check-label">UEI</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="institute" value="exponent">
+                                <label class="form-check-label">Exponent</label>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="row">

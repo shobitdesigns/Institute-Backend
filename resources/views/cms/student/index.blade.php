@@ -26,7 +26,9 @@
                                 <th>First Name</th>
                                 <th>Last Name</th>
                                 <th>Email</th>
+                                <th>Father Name</th>
                                 <th>Mobile</th>
+                                <th>Institute</th>
                                 <th>Added By</th>
                                 <th>Action</th>
                             </tr>
@@ -68,8 +70,16 @@
                         name: 'email'
                     },
                     {
+                        data: 'father_name',
+                        name: 'father_name'
+                    },
+                    {
                         data: 'mobile',
                         name: 'mobile'
+                    },
+                    {
+                        data: 'institute',
+                        name: 'institute'
                     },
                     {
                         data: 'added_by',

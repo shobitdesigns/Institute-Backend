@@ -43,6 +43,14 @@ class Student extends Model
         );
     }
 
+    protected function fatherName(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => ucwords($value),
+            set: fn ($value) => strtolower($value),
+        );
+    }
+
     public static function generateUniqueId()
     {
         $latestStudent  = self::latest('id')->first();
@@ -63,5 +71,17 @@ class Student extends Model
     public function addedBy():BelongsTo
     {
         return $this->belongsTo(User::class,'user_id');
+    }
+
+    public function hasPendingInstallment(): bool
+    {
+        $studentCourse = $this->studentCourse;
+        return $studentCourse && !$studentCourse->isFeesFullyPaid();
+    }
+
+    public function pendingAmount(): float
+    {
+        $studentCourse = $this->studentCourse;
+        return $studentCourse ? $studentCourse->pendingAmount() : 0;
     }
 }

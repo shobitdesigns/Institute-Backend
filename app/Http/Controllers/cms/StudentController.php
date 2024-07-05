@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\cms;
 
+use App\Exports\MonthlyCollectionExport;
 use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Course;
@@ -11,6 +12,7 @@ use App\Models\StudentCourse;
 use App\Models\StudentPayment;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\File;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Session;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -27,6 +29,8 @@ class StudentController extends Controller
                 'students.unique_id as unique_id',
                 'students.first_name as first_name',
                 'students.last_name as last_name',
+                'students.father_name as father_name',
+                'students.institute as institute',
                 'students.email as email',
                 'students.mobile as mobile',
                 'users.name as added_by'
@@ -98,6 +102,8 @@ class StudentController extends Controller
         $request->validate([
             'first_name'            => 'required|string|max:255',
             'last_name'             => 'required|string|max:255',
+            'father_name'           => 'required|string|max:255',
+            'institute'             => 'required',
             'email'                 => 'required|email',
             'mobile'                => 'required|string|max:15',
             'course_id'             => 'required',
@@ -110,6 +116,8 @@ class StudentController extends Controller
         $student                  =   new Student();
         $student->first_name      =   $request->first_name;
         $student->last_name       =   $request->last_name;
+        $student->father_name     =   $request->father_name;
+        $student->institute       =   $request->institute;
         $student->email           =   $request->email;
         $student->user_id         =   auth()->user()->id;
         $student->mobile          =   $request->mobile;
@@ -167,7 +175,7 @@ class StudentController extends Controller
 
         $studentPayment->save();
 
-        $data['message']            =   auth()->user()->name . " has register " . $student->name;
+        $data['message']            =   auth()->user()->name . " has register " . $student->first_name;
         $data['action']             =   "created";
         $data['module']             =   "student";
         $data['object']             =   $student;
@@ -253,7 +261,7 @@ class StudentController extends Controller
 
         $student->update();
 
-        $data['message']          =   auth()->user()->name . " has updated " . $student->name;
+        $data['message']          =   auth()->user()->name . " has updated " . $student->first_name;
         $data['action']           =   "updated";
         $data['module']           =   "student";
         $data['object']           =   $student;
@@ -275,7 +283,7 @@ class StudentController extends Controller
             return back();
         }
 
-        $data['message']            =   auth()->user()->name . " has deleted " . $student->name;
+        $data['message']            =   auth()->user()->name . " has deleted " . $student->first_name;
         $data['action']             =   "deleted";
         $data['module']             =   "student";
         $data['object']             =   $student;
@@ -288,6 +296,10 @@ class StudentController extends Controller
 
     public function storeMonthlyInstallment(Request $request)
     {
+        $request->validate([
+            'payment_method'        => 'required',
+            'installment'           => 'required|numeric'
+        ]);
         $studentPayment                     =   new StudentPayment();
         $studentPayment->student_course_id  =   $request->student_course_id;
         $studentPayment->payment_mode       =   'installment';
@@ -295,8 +307,8 @@ class StudentController extends Controller
         $studentPayment->pay                =   $request->installment;
         $studentPayment->save();
 
-        $student                  =   $studentPayment->studentCourse->student->name;
-        $data['message']          =   auth()->user()->name . " has updated payment of " . $student->name;
+        $student                  =   $studentPayment->studentCourse->student;
+        $data['message']          =   auth()->user()->name . " has updated payment of " . $student->first_name;
         $data['action']           =   "updated";
         $data['module']           =   "studentPayment";
         $data['object']           =   $studentPayment;
@@ -305,5 +317,52 @@ class StudentController extends Controller
         Session::flash('success','Payment Store Successfully');
 
         return back();
+    }
+
+    public function manageStudentInstallment(Request $request)
+    {
+        if($request->has('student'))
+        {
+            $data['students']     =     Student::where(function ($query) use ($request) {
+                                            $query->where('first_name', 'like', '%' . $request->student . '%')
+                                                ->orWhere('last_name', 'like', '%' . $request->student . '%')
+                                                ->orWhere('unique_id', 'like', '%' . $request->student . '%')
+                                                ->orWhere('father_name', 'like', '%' . $request->student . '%');
+                                        })->get();
+        }else{
+            $data['students']     =     collect();
+        }
+
+        return view('cms.student.manageStudentInstallment',$data);
+    }
+
+    public function monthlyCollection(Request $request)
+    {
+        $data['students']               =       Student::whereHas('studentCourse', function ($query) {
+                                                        $query->whereHas('payments', function ($paymentQuery) {
+                                                            $paymentQuery->where('payment_mode', 'installment');
+                                                        });
+                                                    })->get()->filter(function ($student) {
+                                                        return $student->hasPendingInstallment();
+                                                });
+
+        $data['totalMonthlyPayment']    =       $data['students']->sum(function ($student) {
+                                                    return $student->studentCourse->monthly_payment;
+                                                });
+
+        return view('cms.student.monthlyCollection',$data);
+    }
+
+    public function exportMonthlyCollection()
+    {
+        $students               =       Student::whereHas('studentCourse', function ($query) {
+                                            $query->whereHas('payments', function ($paymentQuery) {
+                                                $paymentQuery->where('payment_mode', 'installment');
+                                            });
+                                        })->get()->filter(function ($student) {
+                                            return $student->hasPendingInstallment();
+                                        });
+
+        return Excel::download(new MonthlyCollectionExport($students), today().'students_pending_installments.xlsx');
     }
 }

@@ -27,4 +27,16 @@ class StudentCourse extends Model
     {
         return $this->belongsTo(Student::class,'student_id');
     }
+
+    public function isFeesFullyPaid(): bool
+    {
+        $totalPaid = $this->payments()->sum('pay');
+        return $totalPaid >= $this->course_fixed_price;
+    }
+
+    public function pendingAmount(): float
+    {
+        $totalPaid = $this->payments()->sum('pay');
+        return max(0, $this->course_fixed_price - $totalPaid);
+    }
 }
