@@ -31,6 +31,7 @@ class StudentController extends Controller
                 'students.last_name as last_name',
                 'students.father_name as father_name',
                 'students.institute as institute',
+                'students.location as location',
                 'students.email as email',
                 'students.mobile as mobile',
                 'users.name as added_by'
@@ -103,6 +104,7 @@ class StudentController extends Controller
             'first_name'            => 'required|string|max:255',
             'last_name'             => 'required|string|max:255',
             'father_name'           => 'required|string|max:255',
+            'location'              => 'required|string|max:255',
             'institute'             => 'required',
             'email'                 => 'required|email',
             'mobile'                => 'required|string|max:15',
@@ -118,6 +120,7 @@ class StudentController extends Controller
         $student->last_name       =   $request->last_name;
         $student->father_name     =   $request->father_name;
         $student->institute       =   $request->institute;
+        $student->location        =   $request->location;
         $student->email           =   $request->email;
         $student->user_id         =   auth()->user()->id;
         $student->mobile          =   $request->mobile;
@@ -232,6 +235,9 @@ class StudentController extends Controller
         $student->email           =   $request->email;
         $student->user_id         =   auth()->user()->id;
         $student->mobile          =   $request->mobile;
+        $student->father_name     =   $request->father_name;
+        $student->institute       =   $request->institute;
+        $student->location        =   $request->location;
 
         if ($request->has("tenth_document")) {
             if (file_exists("uploads/students/".$student->id."/" . $student->tenth_document)) {
@@ -364,5 +370,10 @@ class StudentController extends Controller
                                         });
 
         return Excel::download(new MonthlyCollectionExport($students), today().'students_pending_installments.xlsx');
+    }
+
+    public function exportStudentsData()
+    {
+        //
     }
 }

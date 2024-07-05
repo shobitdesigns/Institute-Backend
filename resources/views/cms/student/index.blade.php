@@ -16,6 +16,9 @@
         <div class="card card-primary card-outline">
             <div class="card-header">
                 <h3 class="card-title">Student List</h3>
+                <div class="card-tools">
+                    <a class="btn-success btn" href="{{ route('exportStudentsData') }}"><i class="far fa-credit-card mr-2"></i>Export</a>
+                </div>
             </div>
             <div class="table-responsive">
                 <div class="card-body">
@@ -29,6 +32,7 @@
                                 <th>Father Name</th>
                                 <th>Mobile</th>
                                 <th>Institute</th>
+                                <th>Location</th>
                                 <th>Added By</th>
                                 <th>Action</th>
                             </tr>
@@ -80,6 +84,10 @@
                     {
                         data: 'institute',
                         name: 'institute'
+                    },
+                    {
+                        data: 'location',
+                        name: 'location'
                     },
                     {
                         data: 'added_by',

@@ -44,17 +44,21 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="form-group col-4">
+                    <div class="form-group col-3">
                         {{ Form::label('email', 'Email', []) }}<span style="color: red;"> *</span>
                         {{ Form::email('email', null, ['class' => 'form-control', 'placeholder' => 'Enter Email', 'required', 'email']) }}
                         <small id="emailError" style="color: red; display: none;">Invalid email type. Please enter an @gmail.com
                         </small>
                     </div>
-                    <div class="form-group col-4">
+                    <div class="form-group col-3">
                         {{ Form::label('mobile', 'Mobile', []) }}<span style="color: red;"> *</span>
                         {{ Form::text('mobile', null, ['class' => 'form-control contact_number','id'=>'numberInput' ,'placeholder' => 'Enter Mobile', 'required']) }}
                     </div>
-                    <div class="col-4">
+                    <div class="form-group col-3">
+                        {{ Form::label('location', 'Location', []) }}<span style="color: red;"> *</span>
+                        {{ Form::text('location', null, ['class' => 'form-control location','id'=>'location' ,'placeholder' => 'Enter Location', 'required']) }}
+                    </div>
+                    <div class="col-3">
                         {{ Form::label('institute', 'Institute', []) }}<span style="color: red;"> *</span>
                         <div class="form-group row">
                             <div class="form-check ml-3 mr-3">

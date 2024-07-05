@@ -52,6 +52,7 @@ Route::post('store-monthly-installment',    [StudentController::class,'storeMont
 Route::get('manage-student-installment',    [StudentController::class,'manageStudentInstallment'])->name('manageStudentInstallment');
 Route::get('monthly-collection',            [StudentController::class,'monthlyCollection'])->name('monthlyCollection');
 Route::get('export-monthly-collection',     [StudentController::class, 'exportMonthlyCollection'])->name('exportMonthlyCollection');
+Route::get('export-students-data',          [StudentController::class, 'exportStudentsData'])->name('exportStudentsData');
 
 //Ajax Routes
 Route::get('get-course-details/{id}',       [CommonController::class, 'getCourse'])->name('getCourse');
