@@ -72,7 +72,7 @@ class UserController extends Controller
         }
         $user->save();
 
-        // Mail::to($user->email)->send(new UserMail($user,$password));
+        Mail::to($user->email)->send(new UserMail($user,$password));
 
         $data['message']        =   auth()->user()->name . " has created '$user->name' account";
         $data['action']         =   "created";

@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers\cms;
 
-use App\Exports\MonthlyCollectionExport;
-use App\Exports\StudentsExport;
 use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Course;
@@ -11,10 +9,14 @@ use App\Models\Student;
 use Illuminate\Http\Request;
 use App\Models\StudentCourse;
 use App\Models\StudentPayment;
+use App\Exports\StudentsExport;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Mail;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Session;
+use App\Exports\MonthlyCollectionExport;
+use App\Mail\StudentCommonMail;
 use Yajra\DataTables\Facades\DataTables;
 
 class StudentController extends Controller
@@ -178,6 +180,10 @@ class StudentController extends Controller
         }
 
         $studentPayment->save();
+        $data['bladeName']                      =   'email.studentRegister';
+        $data['subject']                        =   'Student Register Mail';
+
+        Mail::to($student->email)->send(new StudentCommonMail($student,$data));
 
         $data['message']            =   auth()->user()->name . " has register " . $student->first_name;
         $data['action']             =   "created";
@@ -314,7 +320,10 @@ class StudentController extends Controller
         $studentPayment->pay                =   $request->installment;
         $studentPayment->save();
 
-        $student                  =   $studentPayment->studentCourse->student;
+        $student                            =   $studentPayment->studentCourse->student;
+        $data['bladeName']                  =   'email.studentInstallmentMail';
+        $data['subject']                    =   'Student Installment Payslip';
+        Mail::to($student->email)->send(new StudentCommonMail($student,$data));
         $data['message']          =   auth()->user()->name . " has updated payment of " . $student->first_name;
         $data['action']           =   "updated";
         $data['module']           =   "studentPayment";

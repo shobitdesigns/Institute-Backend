@@ -105,7 +105,7 @@
                             <div class="card-header">
                                 <h3 class="card-title">Manual Payment </h3>
                             </div>
-                            {{ Form::open(['url' => route('storeMonthlyInstallment'), 'method' => 'POST', 'onSubmit' => "document.getElementById('submit').disabled=true;"]) }}
+                            {{ Form::open(['url' => route('storeMonthlyInstallment'), 'method' => 'POST', 'onSubmit' => "document.getElementById('submit').disabled=true;",'id'=>'form']) }}
                             <input type="hidden" name="student_course_id" value="{{ $student->studentCourse->id }}">
                             <div class="card-body">
                                 <div class="row" >
@@ -124,7 +124,7 @@
                                 </div>
                             </div>
                             <div class="card-footer">
-                                <button type="submit" class="btn btn-success float-right"><i
+                                <button type="submit" id="submit" class="btn btn-success float-right"><i
                                         class="far fa-credit-card"></i> Submit
                                     Payment
                                 </button>
@@ -177,7 +177,9 @@
 @section('footerScript')
     <script>
         $(document).ready(function() {
-
+            $('#form').on('submit', function() {
+                $('#submit').attr('disabled', 'disabled');
+            });
         });
     </script>
 @endsection
