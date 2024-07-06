@@ -12,7 +12,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach ($students as $student)
+        {{-- @foreach ($students as $student)
             <tr>
                 <td>{{ $student->unique_id }}</td>
                 <td>{{ $student->first_name }}</td>
@@ -23,12 +23,12 @@
                 <td>{{ $student->institute }}</td>
                 <td>{{ $student->studentCourse->monthly_payment }}</td>
             </tr>
-        @endforeach
+        @endforeach --}}
     </tbody>
-    <tfoot>
+    {{-- <tfoot>
         <tr>
             <td colspan="7" style="text-align:right;"><strong>Total Monthly Payment:</strong></td>
             <td><strong>{{ $totalMonthlyPayment }}</strong></td>
         </tr>
-    </tfoot>
+    </tfoot> --}}
 </table>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\cms;
 
 use App\Exports\MonthlyCollectionExport;
+use App\Exports\StudentsExport;
 use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Course;
@@ -374,6 +375,8 @@ class StudentController extends Controller
 
     public function exportStudentsData()
     {
-        //
+        $students               =       Student::with('studentCourse.payments')->get();
+
+        return Excel::download(new StudentsExport($students), today().'students_data.xlsx');
     }
 }
