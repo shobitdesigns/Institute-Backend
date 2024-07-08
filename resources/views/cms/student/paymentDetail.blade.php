@@ -113,7 +113,7 @@
                                         <label for="payment_method">Payment Method</label><span style="color: red;"> *</span>
                                         <div>
                                             <label>{{ Form::radio('payment_method', 'online', true) }} Online Payment</label>
-                                            <label>{{ Form::radio('payment_method', 'offline', false) }} Offline Payment</label>
+                                            <label>{{ Form::radio('payment_method', 'cash', false) }} Cash</label>
                                         </div>
                                     </div>
 

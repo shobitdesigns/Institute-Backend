@@ -45,8 +45,8 @@
                         {{ Form::number('mrp', null, ['class' => 'form-control mrp', 'placeholder' => 'Enter MRP', 'required','min'=>'0']) }}
                     </div>
                     <div class="form-group col-4">
-                        {{ Form::label('fix_price', 'Fix Price', []) }}<span style="color: red;"> *</span>
-                        {{ Form::number('fix_price', null, ['class' => 'form-control fix_price', 'placeholder' => 'Enter Fix Price', 'required','min'=>'0']) }}
+                        {{ Form::label('fix_price', 'Sale Price', []) }}<span style="color: red;"> *</span>
+                        {{ Form::number('fix_price', null, ['class' => 'form-control fix_price', 'placeholder' => 'Enter Sale Price', 'required','min'=>'0']) }}
                     </div>
                     <div class="form-group col-4">
                         {{ Form::label('qualification_ids[]', 'Select Qualifications', []) }}<span style="color: red;"> *</span>

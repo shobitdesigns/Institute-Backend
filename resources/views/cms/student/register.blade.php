@@ -117,8 +117,8 @@
                         {{ Form::number('mrp', null, ['class' => 'form-control mrp', 'placeholder' => 'Enter MRP','disabled', 'id' => 'mrp']) }}
                     </div>
                     <div class="form-group col-2">
-                        {{ Form::label('fix_price', 'Fix Price', []) }}
-                        {{ Form::number('fix_price', null, ['class' => 'form-control fix_price', 'placeholder' => 'Enter Fix Price','disabled','id'=>'fix_price']) }}
+                        {{ Form::label('fix_price', 'Sale Price', []) }}
+                        {{ Form::number('fix_price', null, ['class' => 'form-control fix_price', 'placeholder' => 'Enter Sale Price','disabled','id'=>'fix_price']) }}
                     </div>
                     <div class="form-group col-3">
                         {{ Form::label('qualification', 'Qualifications', []) }}
@@ -158,7 +158,7 @@
                         <label for="payment_method">Payment Method</label><span style="color: red;"> *</span>
                         <div>
                             <label>{{ Form::radio('payment_method', 'online', true) }} Online Payment</label>
-                            <label>{{ Form::radio('payment_method', 'offline', false) }} Offline Payment</label>
+                            <label>{{ Form::radio('payment_method', 'cash', false) }} Cash </label>
                         </div>
                     </div>
                 </div>
