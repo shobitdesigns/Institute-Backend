@@ -319,13 +319,17 @@ CREATE TABLE `student_payments` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `student_payments` */
 
 insert  into `student_payments`(`id`,`student_course_id`,`payment_mode`,`payment_method`,`pay`,`created_at`,`updated_at`) values 
 (1,1,'full_pay','offline','8000','2024-06-20 05:57:00','2024-06-20 05:57:00'),
-(3,4,'installment','online','10000','2024-06-20 06:47:54','2024-06-20 06:47:54');
+(3,4,'installment','online','10000','2024-06-20 06:47:54','2024-06-20 06:47:54'),
+(4,4,'installment','online','10000','2025-01-23 05:31:13','2025-01-23 05:31:13'),
+(5,4,'installment','online','10000','2025-01-23 05:31:42','2025-01-23 05:31:42'),
+(6,4,'installment','online','10000','2025-01-23 05:32:02','2025-01-23 05:32:02'),
+(7,4,'installment','cash','5000','2025-01-23 05:32:36','2025-01-23 05:32:36');
 
 /*Table structure for table `students` */
 
@@ -339,9 +343,12 @@ CREATE TABLE `students` (
   `email` varchar(255) DEFAULT NULL,
   `mobile` varchar(60) DEFAULT NULL,
   `user_id` int(11) DEFAULT NULL,
+  `father_name` varchar(255) DEFAULT NULL,
   `tenth_document` varchar(255) DEFAULT NULL,
   `twelfth_document` varchar(255) DEFAULT NULL,
+  `institute` varchar(255) DEFAULT NULL,
   `aadhaar_document` varchar(255) DEFAULT NULL,
+  `location` varchar(255) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -349,9 +356,9 @@ CREATE TABLE `students` (
 
 /*Data for the table `students` */
 
-insert  into `students`(`id`,`unique_id`,`first_name`,`last_name`,`email`,`mobile`,`user_id`,`tenth_document`,`twelfth_document`,`aadhaar_document`,`created_at`,`updated_at`) values 
-(1,'J-1001','shobit','thakur','shobit@gmail.com','8989898989',1,'Shobit_student_tenth_document.pdf',NULL,NULL,'2024-06-20 11:27:00','2024-06-20 05:57:00'),
-(4,'J-1002','roshan','kumar','roshan@gmail.com','9898989898',1,NULL,NULL,NULL,'2024-06-20 06:47:54','2024-06-20 06:47:54');
+insert  into `students`(`id`,`unique_id`,`first_name`,`last_name`,`email`,`mobile`,`user_id`,`father_name`,`tenth_document`,`twelfth_document`,`institute`,`aadhaar_document`,`location`,`created_at`,`updated_at`) values 
+(1,'J-1001','shobit','thakur','shobit@gmail.com','8989898989',1,'test father','Shobit_student_tenth_document.pdf','Shobit_student_twelfth_document.pdf','uei',NULL,'canada','2025-01-23 10:59:28','2025-01-23 05:29:28'),
+(4,'J-1002','roshan','kumar','roshan@gmail.com','9898989898',1,NULL,NULL,NULL,NULL,NULL,NULL,'2024-06-20 06:47:54','2024-06-20 06:47:54');
 
 /*Table structure for table `users` */
 
