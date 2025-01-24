@@ -141,19 +141,5 @@ class User extends Authenticatable
         });
     }
 
-    public function document():HasOne
-    {
-        return $this->HasOne(Document::class);
-    }
-
-    public function attendances(): HasMany
-    {
-        return $this->hasMany(Attendance::class);
-    }
-
-    public function leaves():HasMany
-    {
-        return $this->hasMany(Leave::class);
-    }
 
 }

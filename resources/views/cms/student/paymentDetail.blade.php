@@ -119,7 +119,7 @@
 
                                     <div class="form-group ml-4">
                                         {{ Form::label('installment', 'Monthly Installment', []) }}
-                                        {{ Form::number('installment', null, ['class' => 'form-control', 'placeholder' => 'Enter Monthly Installment','id'=>'installment','required','min'=>'1']) }}
+                                        {{ Form::number('installment', null, ['class' => 'form-control', 'placeholder' => 'Enter Monthly Installment','id'=>'installment','required','min'=>'1','data-max' =>$balanceLeft]) }}
                                     </div>
                                 </div>
                             </div>
@@ -179,6 +179,16 @@
         $(document).ready(function() {
             $('#form').on('submit', function() {
                 $('#submit').attr('disabled', 'disabled');
+            });
+
+            const maxInstallment = parseInt($('#installment').data('max'));
+
+            $('#installment').on('input', function () {
+                const value = parseInt($(this).val());
+                if (value > maxInstallment) {
+                    alert(`The maximum value allowed is ${maxInstallment}`);
+                    $(this).val('');
+                }
             });
         });
     </script>
